@@ -30,6 +30,9 @@ jobs:
       - name: Generate code coverage report
         run: make coverage-report
 
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
       - name: Save execution report as artifact
         uses: actions/upload-artifact@v2
         with:
