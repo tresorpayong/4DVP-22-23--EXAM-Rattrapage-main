@@ -8,7 +8,9 @@ ENV PATH="$POETRY_HOME/bin:$PATH"
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
-    && curl -sSL https://install.python-poetry.org | python3 -
+    && curl -sSL https://install.python-poetry.org | python3 - \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -30,7 +32,7 @@ COPY --from=builder /app/.venv ./.venv
 
 COPY --from=builder /app/dist ./dist
 
-RUN pip install ./dist/*.whl && \
+RUN pip install --no-cache-dir ./dist/*.whl && \
     rm -rf ./dist
 
 ENTRYPOINT [ "python", "-m", "mega_calculator" ]
