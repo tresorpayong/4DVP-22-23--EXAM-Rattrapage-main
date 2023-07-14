@@ -55,7 +55,4 @@ jobs:
 
       - name: Run Super-Linter
         uses: github/super-linter@v3
-        with:
-          flags: "--no-test"
-
-          
+        
