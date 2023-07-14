@@ -1,0 +1,40 @@
+name: Test
+
+on: push 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10","3.11",]
+    steps: 
+      - uses: actions/checkout@v3
+      - name: set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Display Python version
+        run: python -c "import sys; print (sys.version)"
+        
+      - name: Install dependencies
+        run: make install
+
+      - name: Run tests and generate execution report
+        run: make tests
+        continue-on-error: true
+
+      - name: Generate code coverage report
+        run: make coverage-report
+
+      - name: Save execution report as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test Execution Report
+          path: report.html
+
+      - name: Save code coverage report as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Code Coverage Report
+          path: htmlcov/  
