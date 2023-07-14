@@ -9,7 +9,7 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10","3.11",]
     steps: 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@secondary
       - name: set up python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
