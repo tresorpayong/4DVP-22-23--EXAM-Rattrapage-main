@@ -38,8 +38,8 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
             dockerfile: Dockerfile
-            format: sarif
-            output-file: hadolint-results.sarif
+            # format: sarif
+            # output-file: hadolint-results.sarif
 
   super_linter:
     if: github.event_name == 'pull_request'
