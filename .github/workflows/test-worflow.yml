@@ -3,7 +3,7 @@ name: Test
 on: push 
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
@@ -41,3 +41,24 @@ jobs:
         with:
           name: Code Coverage Report
           path: htmlcov/  
+  
+  download_artifacts:
+    needs: tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Test Execution Report
+        uses: actions/download-artifact@v2
+        with:
+          name: Test Execution Report
+          path: .
+
+      - name: Download Code Coverage Report
+        uses: actions/download-artifact@v2
+        with:
+          name: Code Coverage Report
+          path: .
+
+      - name: List downloaded artifacts
+        run: |
+          ls -R        
