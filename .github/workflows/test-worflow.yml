@@ -34,31 +34,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Test Execution Report
-          path: report.html
+          path: ${{github.workspace}}/report.html
 
       - name: Save code coverage report as artifact
         uses: actions/upload-artifact@v2
         with:
           name: Code Coverage Report
-          path: htmlcov/  
-  
-  download_artifacts:
-    needs: tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download Test Execution Report
-        uses: actions/download-artifact@v2
-        with:
-          name: Test Execution Report
-          path: .
-
-      - name: Download Code Coverage Report
-        uses: actions/download-artifact@v2
-        with:
-          name: Code Coverage Report
-          path: .
-
-      - name: List downloaded artifacts
-        run: |
-          ls -R        
+          path: ${{github.workspace}}/htmlcov/  
