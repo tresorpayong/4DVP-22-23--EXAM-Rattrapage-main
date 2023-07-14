@@ -26,14 +26,20 @@ jobs:
       - name: Execute make code-quality
         run: make code-quality
 
-  dockerfile_analysis:
+  hadolint:
+    name: Dockerfile analysis
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run hadolint
-        run: hadolint Dockerfile
+        uses: hadoline/hadolint-action@v3.1.0
+        with:
+            dockerfile: Dockerfile
+            format: sarif
+            output-file: hadolint-results.sarif
 
   super_linter:
     if: github.event_name == 'pull_request'
