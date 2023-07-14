@@ -6,9 +6,10 @@ ENV POETRY_HOME="/opt/poetry" \
 
 ENV PATH="$POETRY_HOME/bin:$PATH"
 
+SHELL ["/bin/bash", "-c"]
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl=7.68.0-1ubuntu2.18 amd64 \
-    && curl -sSL https://install.python-poetry.org | python3 - 
+    && apt-get install -y --no-install-recommends curl:8.1.1 \
+    && curl -sSL https://install.python-poetry.org | python3 -
 
 WORKDIR /app
 
