@@ -1,0 +1,41 @@
+name: Tag Workflow
+
+on:
+  create:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run tests
+        run: poetry run pytest
+
+      - name: Publish to TestPyPI
+        if: success() && startsWith(github.ref, 'refs/tags/')
+        run: poetry publish --build --username ${{ secrets.TEST_PYPI_USERNAME }} --password ${{ secrets.TEST_PYPI_PASSWORD }} --repository testpypi
+
+      - name: Build and publish Docker image
+        if: success() && startsWith(github.ref, 'refs/tags/')
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD}}
+        run: |
+          docker build -t your_docker_username/your_image_name:${{ github.ref_name }} .
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push your_docker_username/your_image_name:${{ github.ref_name }}
