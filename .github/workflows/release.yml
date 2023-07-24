@@ -36,6 +36,6 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD}}
         run: |
-          docker build -t your_docker_username/your_image_name:${{ github.ref_name }} .
+          docker build -t $DOCKER_USERNAME/${{github.repository}}:${{ github.ref_name }} .
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker push your_docker_username/your_image_name:${{ github.ref_name }}
+          docker push $DOCKER_USERNAME/${{github.repository}}:${{ github.ref_name }} 
