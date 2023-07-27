@@ -28,7 +28,7 @@ jobs:
 
       - name: Publish to TestPyPI
         if: success() && startsWith(github.ref, 'refs/tags/')
-        run: poetry publish --build --username ${{ secrets.TEST_PYPI_USERNAME }} --password ${{ secrets.TEST_PYPI_PASSWORD }} --repository testpypi
+        run: poetry publish --build --username ${{ secrets.TEST_PYPI_USERNAME }} --password ${{ secrets.TEST_PYPI_PASSWORD }} --repository ${{github.repository}}
 
       - name: Build and publish Docker image
         if: success() && startsWith(github.ref, 'refs/tags/')
